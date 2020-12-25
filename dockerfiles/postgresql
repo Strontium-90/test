@@ -1,0 +1,8 @@
+FROM postgres:12 as dev
+
+ENV TZ=Europe/Moscow
+
+ENV POSTGRES_USER=postgres
+ENV POSTGRES_PASSWORD=postgres
+
+ADD ./docker/postgresql/docker-entrypoint-initdb.d/ /docker-entrypoint-initdb.d/

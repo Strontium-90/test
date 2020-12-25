@@ -1,0 +1,88 @@
+FROM php:7.4-fpm AS base
+
+ENV TZ=Europe/Moscow
+
+ARG PECL_SPL_TYPES_URL=https://github.com/igorsantos07/SPL_Types/archive/0.5.2.tar.gz
+
+RUN apt-get update \
+    && echo "### Composer ###" 1>&2 \
+    && curl -L -o - https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
+    && echo "### Project Composer dependencies ###" 1>&2 \
+    && apt-get install -y \
+        git \
+        unzip \
+    && echo "### Rsync for CI ###" 1>&2 \
+    && apt-get install -y \
+        rsync \
+    && echo "### PHP configuration ###" 1>&2 \
+    && printf "date.timezone = ${TZ}\nmemory_limit = -1\n" > ${PHP_INI_DIR}/php.ini \
+    && echo "### Packages ###" 1>&2 \
+    && apt-get install -y \
+        sudo \
+        procps \
+        libfcgi0ldbl \
+    && echo "### Project dependencies ###" 1>&2 \
+    && docker-php-ext-install \
+        opcache \
+        bcmath \
+        sockets \
+    && apt-get install -y \
+        libpq-dev \
+    && docker-php-ext-install \
+        pdo_pgsql \
+    && apt-get install -y \
+        libicu-dev \
+    && docker-php-ext-install \
+        intl \
+    && apt-get install -y \
+        libxml2-dev \
+    && docker-php-ext-install \
+        soap \
+    && apt-get install -y \
+        libzip-dev \
+    && docker-php-ext-install \
+        zip \
+    && apt-get install -y \
+        librabbitmq-dev \
+    && pecl install \
+        amqp \
+    && docker-php-ext-enable \
+        amqp \
+    && pecl install \
+        ${PECL_SPL_TYPES_URL} \
+    && docker-php-ext-enable \
+        spl_types \
+    && rm -rf \
+        /tmp/pear \
+    && echo "### Xdebug ###" 1>&2 \
+    && pecl install xdebug \
+    && rm -rf \
+        /tmp/pear \
+    && echo "### Directories ###" 1>&2 \
+    && mkdir -p \
+        /var/www \
+        /project \
+        /project/var/cache \
+    && chown -R www-data:www-data \
+        /var/www \
+        /project \
+    && echo "### Cleanup ###" 1>&2 \
+    && rm -rf \
+        /var/lib/apt/lists/*
+
+WORKDIR /project
+
+
+
+
+FROM base AS dev
+
+RUN apt-get update \
+    && echo "### Project dependencies ###" 1>&2 \
+    && apt-get install -y \
+        gettext \
+    && echo "### umask ###" 1>&2 \
+    && printf '\numask 0002\n' >> /etc/bash.bashrc \
+    && echo "### Cleanup ###" 1>&2 \
+    && rm -rf \
+        /var/lib/apt/lists/*
