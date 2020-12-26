@@ -24,7 +24,7 @@ services:
     networks:
       red_network:
         aliases:
-          - product.red.localhost
+          - test.localhost
     volumes:
       - ./docker/nginx/etc/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
       - ./docker/nginx/etc/nginx/conf.d/:/etc/nginx/conf.d/:ro
