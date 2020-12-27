@@ -11,3 +11,13 @@ app_api_boook_search:
     defaults:
         _controller: App\Controller\BookController::search
         _format: json
+
+app_api_boook_show:
+    path: /{_locale}/book/{id}
+    methods: [GET]
+    requirements:
+        _locale: ru|en
+        id: \d+
+    defaults:
+        _controller: App\Controller\BookController::show
+        _format: json

@@ -9,6 +9,7 @@ use App\Repository\BookRepository;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BookController extends AbstractFOSRestController
 {
@@ -51,7 +52,7 @@ class BookController extends AbstractFOSRestController
             $filter = $form->getData();
 
             return $this->handleView($this->view(
-                $bookRepository->search((string)$filter['name']),
+                $bookRepository->findByName((string) $filter['name'], 10),
                 Response::HTTP_OK
             ));
         }
@@ -59,6 +60,20 @@ class BookController extends AbstractFOSRestController
         return $this->handleView($this->view(
             $form,
             Response::HTTP_BAD_REQUEST
+        ));
+    }
+
+    public function show(Request $request, BookRepository $bookRepository): Response
+    {
+        $id = $request->attributes->get('id');
+        $book = $bookRepository->find($id);
+        if (null === $book) {
+            throw new NotFoundHttpException(sprintf('Book with id="%s" not found', $id));
+        }
+
+        return $this->handleView($this->view(
+            $book,
+            Response::HTTP_OK
         ));
     }
 }

@@ -20,7 +20,7 @@ class BookRepository extends ServiceEntityRepository
      *
      * @return array<Book>
      */
-    public function search(string $name)
+    public function findByName(string $name, int $limit = 20)
     {
         $qb = $this->createQueryBuilder('b');
         $qb
@@ -28,7 +28,7 @@ class BookRepository extends ServiceEntityRepository
             ->where($qb->expr()->like('b.name', ':name'))
             ->setParameter('name', '%'.$name.'%')
             ->orderBy('b.name')
-            ->setMaxResults(20)
+            ->setMaxResults($limit)
         ;
 
         // Тут обычно делают пагинацию

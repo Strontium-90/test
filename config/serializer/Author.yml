@@ -1,7 +1,0 @@
-App\Entity\Author:
-    exclusion_policy: NONE
-    properties:
-        id:
-            expose: true
-        name:
-            expose: true

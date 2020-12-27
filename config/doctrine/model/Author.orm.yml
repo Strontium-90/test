@@ -11,7 +11,8 @@ App\Entity\Author:
                 strategy: AUTO
     fields:
         name:
-            type: text
+            type: string
+            length: 1000
 
     manyToMany:
         books:

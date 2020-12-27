@@ -13,7 +13,8 @@ App\Entity\Book:
 
     fields:
         name:
-            type: text
+            type: string
+            length: 1000
 
     manyToMany:
         authors:

@@ -6,11 +6,23 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use JMS\Serializer\Annotation as JMS;
 
+/**
+ * @JMS\ExclusionPolicy("ALL")
+ */
 class Author
 {
+    /**
+     * @JMS\Expose()
+     * @JMS\SerializedName("Id")
+     */
     protected ?int $id = null;
 
+    /**
+     * @JMS\Expose()
+     * @JMS\SerializedName("Name")
+     */
     protected ?string $name = null;
 
     /** @var Collection<Book> */
