@@ -2,8 +2,6 @@ FROM php:7.4-fpm AS base
 
 ENV TZ=Europe/Moscow
 
-ARG PECL_SPL_TYPES_URL=https://github.com/igorsantos07/SPL_Types/archive/0.5.2.tar.gz
-
 RUN apt-get update \
     && echo "### Composer ###" 1>&2 \
     && curl -L -o - https://getcomposer.org/installer | php -- --install-dir=/usr/bin --filename=composer \
@@ -35,25 +33,9 @@ RUN apt-get update \
     && docker-php-ext-install \
         intl \
     && apt-get install -y \
-        libxml2-dev \
-    && docker-php-ext-install \
-        soap \
-    && apt-get install -y \
         libzip-dev \
     && docker-php-ext-install \
         zip \
-    && apt-get install -y \
-        librabbitmq-dev \
-    && pecl install \
-        amqp \
-    && docker-php-ext-enable \
-        amqp \
-    && pecl install \
-        ${PECL_SPL_TYPES_URL} \
-    && docker-php-ext-enable \
-        spl_types \
-    && rm -rf \
-        /tmp/pear \
     && echo "### Xdebug ###" 1>&2 \
     && pecl install xdebug \
     && rm -rf \
@@ -63,6 +45,8 @@ RUN apt-get update \
         /var/www \
         /project \
         /project/var/cache \
+    && usermod --non-unique --uid 1000 www-data \
+    && groupmod --non-unique --gid 1000 www-data \
     && chown -R www-data:www-data \
         /var/www \
         /project \

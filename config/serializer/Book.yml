@@ -1,0 +1,9 @@
+App\Entity\Book:
+    exclusion_policy: NONE
+    properties:
+        id:
+            expose: true
+        name:
+            expose: true
+        authors:
+            expose: true

@@ -1,0 +1,20 @@
+App\Entity\Author:
+    type: entity
+    table: authors
+    id:
+        id:
+            type: integer
+            unique: true
+            options:
+                unsigned: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: text
+
+    manyToMany:
+        books:
+            targetEntity: App\Entity\Book
+            inversedBy: authors
+            cascade: [ "persist" ]

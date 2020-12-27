@@ -22,7 +22,7 @@ services:
       traefik.http.routers.test-nginx-http.rule: "Host(`test.localhost`)"
       traefik.http.routers.test-nginx-http.service: "test-nginx-80"
     networks:
-      red_network:
+      test_network:
         aliases:
           - test.localhost
     volumes:
@@ -30,6 +30,8 @@ services:
       - ./docker/nginx/etc/nginx/conf.d/:/etc/nginx/conf.d/:ro
       - ./:/project/:ro,delegated
     restart: "no"
+    ports:
+      - "80:80"
 
   php-fpm:
     container_name: test_php-fpm
@@ -50,7 +52,7 @@ services:
         max-size: "1m"
         max-file: "1"
     networks:
-      red_network:
+      test_network:
         aliases:
           - test-php-fpm
     volumes:
@@ -83,7 +85,7 @@ services:
         max-size: "1m"
         max-file: "1"
     networks:
-      red_network:
+      test_network:
         aliases:
           - test-postgresql
     ports:
@@ -93,7 +95,7 @@ services:
     restart: "no"
 
 networks:
-  red_network:
+  test_network:
     external: true
 
 volumes:

@@ -1,0 +1,30 @@
+App\Entity\Book:
+    type: entity
+    table: books
+    repositoryClass: App\Repository\BookRepository
+    id:
+        id:
+            type: integer
+            unique: true
+            options:
+                unsigned: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        name:
+            type: text
+
+    manyToMany:
+        authors:
+            targetEntity: App\Entity\Author
+            inversedBy: books
+            cascade: [ "persist" ]
+            joinTable:
+                name: book_authors
+                joinColumns:
+                    book_id:
+                        referencedColumnName: id
+                inverseJoinColumns:
+                    author_id:
+                        referencedColumnName: id

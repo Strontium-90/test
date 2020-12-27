@@ -1,0 +1,13 @@
+app_api_boook_create:
+    path: /book/create
+    methods: [POST]
+    defaults:
+        _controller: App\Controller\BookController::create
+        _format: json
+
+app_api_boook_search:
+    path: /book/search
+    methods: [GET]
+    defaults:
+        _controller: App\Controller\BookController::search
+        _format: json
