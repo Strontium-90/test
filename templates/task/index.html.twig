@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% set title = 'Список задач' %}
+
+{% block content %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Юзернейм</th>
+            <th>Email</th>
+            <th>Текст</th>
+        </tr>
+        </thead>
+        <tbody>
+        {# @var task App\Model\Task #}
+        {% for task in tasks %}
+            <tr>
+                <td>{{ task.username }}</td>
+                <td>{{ task.email }}</td>
+                <td>{{ task.text }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

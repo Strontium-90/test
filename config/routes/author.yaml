@@ -1,6 +1,0 @@
-app_api_author_create:
-    path: /author/create
-    methods: [POST]
-    defaults:
-        _controller: App\Controller\AuthorController::create
-        _format: json

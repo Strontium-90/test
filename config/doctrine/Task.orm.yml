@@ -1,0 +1,19 @@
+App\Model\Task:
+    type: entity
+    table: tasks
+    id:
+        id:
+            type: integer
+            options:
+                unsigned: true
+            generator:
+                strategy: AUTO
+
+    fields:
+        username:
+            type: string
+        email:
+            type: string
+            column: email
+        text:
+            type: text
